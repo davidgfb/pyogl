@@ -11,12 +11,9 @@ from OpenGL.GL import glClearColor, glClear, glMaterialfv,\
 from OpenGL.GLU import gluPerspective, gluLookAt
 from OpenGL.GLUT import glutInit, glutSolidTorus, glutSolidCube
 
-def pp(ms):
+def pp(met):
     glPushMatrix()
-
-    for m in ms:
-        m()
-
+    met()
     glPopMatrix()
 
 def draw_gun():
@@ -42,34 +39,34 @@ def draw_gun():
     # these two functions calls is isolated from the rest of your project.
     # Even inside this push-pop (pp for short) block, we can use nested pp blocks,
     # which are used to further isolate code in it's entirety.
-    pp((lambda : pp((lambda : glTranslatef(3.1, 0, 1.75),\
-                     lambda : glRotatef(90, 0, 1, 0),\
-                     lambda : glScalef(1, 1, 5),\
-                     lambda : glScalef(0.2, 0.2, 0.2),\
-                     lambda : glutSolidTorus(0.2, 1, 10, 10))),\
+    pp(lambda : (pp(lambda : (glTranslatef(3.1, 0, 1.75),\
+                              glRotatef(90, 0, 1, 0),\
+                              glScalef(1, 1, 5),\
+                              glScalef(0.2, 0.2, 0.2),\
+                              glutSolidTorus(0.2, 1, 10, 10))),\
 
-        lambda : pp((lambda : glTranslatef(2.5, 0, 1.75),\
-                     lambda : glScalef(0.1, 0.1, 1),\
-                     lambda : glutSolidCube(1))),\
+                 pp(lambda : (glTranslatef(2.5, 0, 1.75),\
+                              glScalef(0.1, 0.1, 1),\
+                              glutSolidCube(1))),\
 
-        lambda : pp((lambda : glTranslatef(1, 0, 1),\
-                     lambda : glRotatef(10, 0, 1, 0),\
-                     lambda : glScalef(0.1, 0.1, 1),\
-                     lambda : glutSolidCube(1))),\
+                 pp(lambda : (glTranslatef(1, 0, 1),\
+                              glRotatef(10, 0, 1, 0),\
+                              glScalef(0.1, 0.1, 1),\
+                              glutSolidCube(1))),\
 
-        lambda : pp((lambda : glTranslatef(0.8, 0, 0.8),\
-                     lambda : glRotatef(90, 1, 0, 0),\
-                     lambda : glScalef(0.5, 0.5, 0.5),\
-                     lambda : glutSolidTorus(0.2, 1, 10, 10))),\
+                 pp(lambda : (glTranslatef(0.8, 0, 0.8),\
+                              glRotatef(90, 1, 0, 0),\
+                              glScalef(0.5, 0.5, 0.5),\
+                              glutSolidTorus(0.2, 1, 10, 10))),\
 
-        lambda : pp((lambda : glTranslatef(1, 0, 1.5),\
-                     lambda : glRotatef(90, 0, 1, 0),\
-                     lambda : glScalef(1, 1, 4),\
-                     lambda : glutSolidCube(1))),\
+                 pp(lambda : (glTranslatef(1, 0, 1.5),\
+                              glRotatef(90, 0, 1, 0),\
+                              glScalef(1, 1, 4),\
+                              glutSolidCube(1))),\
 
-        lambda : pp((lambda : glRotatef(8, 0, 1, 0),\
-                     lambda : glScalef(1.1, 0.8, 3),\
-                     lambda : glutSolidCube(1)))))
+                 pp(lambda : (glRotatef(8, 0, 1, 0),\
+                              glScalef(1.1, 0.8, 3),\
+                              glutSolidCube(1)))))
 
 # Initialization of PyGame modules
 init()
