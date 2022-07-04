@@ -47,11 +47,10 @@ def draw_gun():
     gluQuadricTexture(quadric, GL_TRUE)
     
     r, h = 1, 3
-    pp(lambda : (glRotatef(90, 0, 1, 0),\
-                 gluCylinder(quadric, r, r, h, 32, 16),\
+    pp(lambda : (gluCylinder(quadric, r, r, h, 32, 16),\
                  glutSolidSphere(r, 20, 20),\
                  glTranslatef(0, 0, h),\
-                 glutSolidSphere(r, 20, 20)))
+                 glutSolidSphere(r, 20, 20))) 
 
     '''radius
     The radius of the sphere.
@@ -97,6 +96,8 @@ while esta_Func:
     # Clears the screen for the next frame to be drawn over
     glClear(16640)
     ############## INSERT CODE FOR GENERATING OBJECTS ##################
+    glRotatef(1, 0, -1, 0) # gira en sentido horario?
+
     draw_gun()
     ####################################################################
     # Function used to advance to the next frame essentially
