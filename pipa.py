@@ -4,15 +4,12 @@ from pygame.event import get
 from pygame.display import flip
 from pygame.time import wait
 
-from OpenGL.GLU import gluPerspective, gluLookAt, gluNewQuadric,\
-     gluQuadricNormals, GLU_SMOOTH, gluQuadricTexture, gluCylinder
-from OpenGL.GLUT import glutInit, glutSolidTorus, glutSolidCube,\
-     glutSolidSphere
 from OpenGL.GL import glClearColor, glClear, glMaterialfv,\
-                      GL_FRONT, GL_AMBIENT, GL_DIFFUSE,\
-                      GL_SPECULAR, glMateriali, GL_SHININESS,\
-                      glPushMatrix, glTranslatef, glRotatef,\
-                      glScalef, glPopMatrix, GL_TRUE
+     GL_FRONT, GL_AMBIENT, GL_DIFFUSE, GL_SPECULAR, glMateriali,\
+     GL_SHININESS, glPushMatrix, glTranslatef, glRotatef,\
+     glScalef, glPopMatrix
+from OpenGL.GLU import gluPerspective, gluLookAt
+from OpenGL.GLUT import glutInit, glutSolidCube
 
 def pp(met):
     glPushMatrix()
@@ -23,12 +20,9 @@ def draw_gun():
     # Setting up materials, ambient, diffuse, specular and shininess properties are all
     # different properties of how a material will react in low/high/direct light for
     # example.
-    k = 0
-    ambient_coeffsGray = [k, k, k, 1]
-    k = 1
-    diffuse_coeffsGray = [k, k, k, k]
-    k = 0
-    specular_coeffsGray = [k, k, k, 1]
+    ambient_coeffsGray, diffuse_coeffsGray, specular_coeffsGray =\
+                        (*(0.3,) * 3, 1), (*(0.5,) * 3, 1),\
+                        (*(0,) * 3, 1)
 
     glMaterialfv(GL_FRONT, GL_AMBIENT, ambient_coeffsGray)
     glMaterialfv(GL_FRONT, GL_DIFFUSE, diffuse_coeffsGray)
@@ -42,36 +36,9 @@ def draw_gun():
     # these two functions calls is isolated from the rest of your project.
     # Even inside this push-pop (pp for short) block, we can use nested pp blocks,
     # which are used to further isolate code in it's entirety.
-    quadric = gluNewQuadric()
-    gluQuadricNormals(quadric, GLU_SMOOTH)						# // Create Smooth Normals
-    gluQuadricTexture(quadric, GL_TRUE)
-    
-    r, h = 1, 3
-    pp(lambda : (gluCylinder(quadric, r, r, h, 32, 16),\
-                 glutSolidSphere(r, 20, 20),\
-                 glTranslatef(0, 0, h),\
-                 glutSolidSphere(r, 20, 20))) 
-
-    '''radius
-    The radius of the sphere.
-    slices
-    The number of subdivisions around the Z axis (similar to lines of longitude).
-    stacks
-    The number of subdivisions along the Z axis (similar to lines of latitude).
-
-    quad	
-    Specifies the quadrics object (created with gluNewQuadric ).
-    base	
-    Specifies the radius of the cylinder at z = 0.
-    top	
-    Specifies the radius of the cylinder at z = height .
-    height	
-    Specifies the height of the cylinder.
-    slices	
-    Specifies the number of subdivisions around the z axis.
-    stacks	
-    Specifies the number of subdivisions along the z axis.
-    '''
+    pp(lambda : (pp(lambda : (glTranslatef(2.5, 0, 1.75),\
+                              glScalef(*(1,) * 3),\
+                              glutSolidCube(1))))) #mas cubos
 
 # Initialization of PyGame modules
 init()
@@ -79,16 +46,14 @@ init()
 glutInit()
 # Setting up the viewport, camera, backgroud and display mode
 display = (1280, 720)
+
 set_mode(display, 1073741826)
-k = 0
-glClearColor(k, k, k, k) 
+glClearColor(*(0.1,) * 3, 0.3) 
+
 an, al = display
-fov, ar, zn, zf = 60, an / al, 0, 50
-gluPerspective(fov, ar, zn, zf)
-x, y, z = (5, 5, 0)
-c_X, c_Y, c_Z = (0, 0, 0)
-u_X, u_Y, u_Z = (0, 0, 1) #rot
-gluLookAt(x, y, z, c_X, c_Y, c_Z, u_X, u_Y, u_Z)
+
+gluPerspective(60, an / al, 0.1, 50) #fov, ar, zn, zf
+gluLookAt(*(*(5,) * 2, 0), *(0,) * 3, *(*(0,) * 2, 1)) #rot
 
 esta_Func = True
 
@@ -96,8 +61,6 @@ while esta_Func:
     # Clears the screen for the next frame to be drawn over
     glClear(16640)
     ############## INSERT CODE FOR GENERATING OBJECTS ##################
-    glRotatef(1, 0, -1, 0) # gira en sentido horario?
-
     draw_gun()
     ####################################################################
     # Function used to advance to the next frame essentially
